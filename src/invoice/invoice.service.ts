@@ -14,7 +14,7 @@ export class InvoiceService {
 
   async create(createInvoiceDto: CreateInvoiceDto): Promise<Invoice> {
     const mongodbUri = this.configService.get<string>('mongodb_uri');
-
+    console.log(mongodbUri);
     const createdInvoice = new this.invoiceModel(createInvoiceDto);
     return createdInvoice.save();
   }
