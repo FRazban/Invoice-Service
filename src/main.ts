@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerTheme } from 'swagger-themes';
+import { the } from '../node_modules/fb-watchman/index';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,8 +17,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   const theme = new SwaggerTheme('v3');
   const options = {
-    explorer: true,
-    customCss: theme.getBuffer('dark')
+    explorer: true
   };
   SwaggerModule.setup('api-docs', app, document, options);
 
