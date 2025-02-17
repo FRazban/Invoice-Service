@@ -1,0 +1,44 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  invoice-service:
+    build:
+      context: ./invoice-service
+    ports:
+      - "3000:3000"
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/invoice
+      RABBITMQ_URI: amqp://guest:guest@rabbitmq
+    depends_on:
+      - mongo
+      - rabbitmq
+    env_file:
+      - .env
+
+  email-service:
+    environment:
+      RABBITMQ_URI: amqp://guest:guest@rabbitmq
+    build:
+      context: ./email-sender
+    depends_on:
+      - rabbitmq
+    env_file:
+      - .env
+      
+volumes:
+  mongo_data:
