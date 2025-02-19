@@ -17,7 +17,7 @@ services:
 
   invoice-service:
     build:
-      context: ../invoice-service   # Adjusted relative path to point one level up
+      context: .
     ports:
       - "3000:3000"
     environment:
@@ -27,7 +27,7 @@ services:
       - mongo
       - rabbitmq
     env_file:
-      - ./.env  # Adjust this path if necessary
+      - .env
       
 volumes:
   mongo_data:
